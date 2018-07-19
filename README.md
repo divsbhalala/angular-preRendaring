@@ -18,7 +18,7 @@ server.start();
 ```
 ##### test it:
 ```bash
-curl http://localhost:3000/render?url=https://www.example.com/
+curl http://localhost:1337/render?url=https://www.example.com/
 ```
 
 ## Use Cases
@@ -106,20 +106,20 @@ If you are trying to test Prerender with your website on localhost, you'll have 
 
 If you are running the prerender service locally. Make sure you set your middleware to point to your local Prerender server with:
 
-`export PRERENDER_SERVICE_URL=http://localhost:3000`
+`export PRERENDER_SERVICE_URL=http://localhost:1337`
 
 	$ git clone https://github.com/prerender/prerender.git
 	$ cd prerender
 	$ npm install
 	$ node server.js
 
-Prerender will now be running on http://localhost:3000. If you wanted to start a web app that ran on say, http://localhost:8000, you can now visit the URL http://localhost:3000/http://localhost:8000 to see how your app would render in Prerender.
+Prerender will now be running on http://localhost:1337. If you wanted to start a web app that ran on say, http://localhost:8000, you can now visit the URL http://localhost:1337/http://localhost:8000 to see how your app would render in Prerender.
 
 To test how your website will render through Prerender using the middleware, you'll want to visit the URL http://localhost:8000?_escaped_fragment_=
 
 That should send a request to the Prerender server and display the prerendered page through your website. If you View Source of that page, you should see the HTML with all of the `<script>` tags removed.
 
-Keep in mind you will see 504s for relative URLs when accessing http://localhost:3000/http://localhost:8000 because the actual domain on that request is your prerender server. This isn't really an issue because once you proxy that request through the middleware, then the domain will be your website and those requests won't be sent to the prerender server.  For instance if you want to see your relative URLS working visit `http://localhost:8000?_escaped_fragment_=`
+Keep in mind you will see 504s for relative URLs when accessing http://localhost:1337/http://localhost:8000 because the actual domain on that request is your prerender server. This isn't really an issue because once you proxy that request through the middleware, then the domain will be your website and those requests won't be sent to the prerender server.  For instance if you want to see your relative URLS working visit `http://localhost:8000?_escaped_fragment_=`
 
 
 # Customization
@@ -255,8 +255,8 @@ export BASIC_AUTH_PASSWORD=test
 Then make sure to pass the basic authentication headers (password base64 encoded).
 
 ```
-curl -u prerender:wrong http://localhost:3000/http://example.com -> 401
-curl -u prerender:test http://localhost:3000/http://example.com -> 200
+curl -u prerender:wrong http://localhost:1337/http://example.com -> 401
+curl -u prerender:test http://localhost:1337/http://example.com -> 200
 ```
 
 ### removeScriptTags
@@ -323,14 +323,14 @@ When running your Prerender server in the web crawling context, we have a separa
 
 If you make an http request to the `/render` endpoint, you can pass any of the following options. You can pass any of these options as query parameters on a GET request or as JSON properties on a POST request. We recommend using a POST request but we will display GET requests here for brevity. Click here to see [how to send the POST request](#getvspost).
 
-These examples assume you have the server running locally on port 3000 but you can also use our hosted service at [https://prerender.com/](https://prerender.com/).
+These examples assume you have the server running locally on port 1337 but you can also use our hosted service at [https://prerender.com/](https://prerender.com/).
 
 #### url
 
 The URL you want to load. Returns HTML by default.
 
 ```
-http://localhost:3000/render?url=https://www.example.com/
+http://localhost:1337/render?url=https://www.example.com/
 ```
 
 #### renderType
@@ -338,7 +338,7 @@ http://localhost:3000/render?url=https://www.example.com/
 The type of content you want to pull off the page.
 
 ```
-http://localhost:3000/render?renderType=html&url=https://www.example.com/
+http://localhost:1337/render?renderType=html&url=https://www.example.com/
 ```
 
 Options are `html`, `jpeg`, `png`, `pdf`, `har`.
@@ -348,7 +348,7 @@ Options are `html`, `jpeg`, `png`, `pdf`, `har`.
 Send your own custom user agent when Chrome loads the page.
 
 ```
-http://localhost:3000/render?userAgent=ExampleCrawlerUserAgent&url=https://www.example.com/
+http://localhost:1337/render?userAgent=ExampleCrawlerUserAgent&url=https://www.example.com/
 ```
 
 #### fullpage
@@ -356,7 +356,7 @@ http://localhost:3000/render?userAgent=ExampleCrawlerUserAgent&url=https://www.e
 Whether you want your screenshot to be the entire height of the document or just the viewport.
 
 ```
-http://localhost:3000/render?fullpage=true&renderType=html&url=https://www.example.com/
+http://localhost:1337/render?fullpage=true&renderType=html&url=https://www.example.com/
 ```
 
 Don't include `fullpage` and we'll just screenshot the normal browser viewport. Include `fullpage=true` for a full page screenshot.
@@ -366,7 +366,7 @@ Don't include `fullpage` and we'll just screenshot the normal browser viewport. 
 Screen width. Lets you emulate different screen sizes.
 
 ```
-http://localhost:3000/render?width=990&url=https://www.example.com/
+http://localhost:1337/render?width=990&url=https://www.example.com/
 ```
 
 Default is `1440`.
@@ -376,7 +376,7 @@ Default is `1440`.
 Screen height. Lets you emulate different screen sizes.
 
 ```
-http://localhost:3000/render?height=100&url=https://www.example.com/
+http://localhost:1337/render?height=100&url=https://www.example.com/
 ```
 
 Default is `718`.
@@ -386,7 +386,7 @@ Default is `718`.
 By default, we don't follow 301 redirects on the initial request so you can be alerted of any changes in URLs to update your crawling data. If you want us to follow redirects instead, you can pass this parameter.
 
 ```
-http://localhost:3000/render?followRedirects=true&url=https://www.example.com/
+http://localhost:1337/render?followRedirects=true&url=https://www.example.com/
 ```
 
 Default is `false`.
@@ -396,7 +396,7 @@ Default is `false`.
 Execute javascript to modify the page before we snapshot your content. If you set `window.prerenderData` to an object, we will pull the object off the page and return it to you. Great for parsing extra data from a page in javascript.
 
 ```
-http://localhost:3000/render?javascript=window.prerenderData=window.angular.version&url=https://www.example.com/
+http://localhost:1337/render?javascript=window.prerenderData=window.angular.version&url=https://www.example.com/
 ```
 
 When using this parameter and `window.prerenderData`, the response from Prerender will look like:
@@ -415,7 +415,7 @@ If you don't set `window.prerenderData`, the response won't be JSON. The respons
 You can send all options as a query parameter on a GET request or as a JSON property on a POST request. We recommend using the POST request when possible to avoid any issues with URL encoding of GET request query strings. Here's a few pseudo examples:
 
 ```
-POST http://localhost:3000/render
+POST http://localhost:1337/render
 {
 	renderType: 'html',
 	javascript: 'window.prerenderData = window.angular.version',
@@ -424,7 +424,7 @@ POST http://localhost:3000/render
 ```
 
 ```
-POST http://localhost:3000/render
+POST http://localhost:1337/render
 {
 	renderType: 'jpeg',
 	fullpage: 'true',
